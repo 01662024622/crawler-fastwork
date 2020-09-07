@@ -1,0 +1,22 @@
+version: '3.2'
+
+services:
+  spreadsheet-crawler-facebook-insight:
+    build: ./
+    image: crawler-fastwork:latest
+    environment:
+      - DB_URL=jdbc:mysql://:3306/laravel?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+      - DB_USERNAME=
+      - DB_PASSWORD=
+      - DB_DDL_AUTO=update
+      - DB_SHOW_SQL=true
+      - DB_DIALECT=org.hibernate.dialect.MySQL5InnoDBDialect
+
+      - CRAWLER_CRON_POST_DAILY=0 0 23 * * *?
+
+      - EMAIL_USER=
+      - EMAIL_PASSWORD=
+    networks:
+      nvn_net:
+networks:
+  nvn_net:
