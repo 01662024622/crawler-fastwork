@@ -18,5 +18,7 @@ services:
       - EMAIL_PASSWORD=
     networks:
       nvn_net:
+        internal: true
 networks:
   nvn_net:
+    internal: true
