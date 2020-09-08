@@ -1,7 +1,7 @@
 version: '3.2'
 
 services:
-  spreadsheet-crawler-facebook-insight:
+  crawler-fastwork:
     build: ./
     image: crawler-fastwork:latest
     environment:
