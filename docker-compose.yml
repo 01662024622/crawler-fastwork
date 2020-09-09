@@ -19,6 +19,10 @@ services:
       - EMAIL_PASSWORD=
     networks:
       nvn_net:
+        internal: true
+        attachable: true
 networks:
   nvn_net:
     internal: true
+    attachable: true
+
