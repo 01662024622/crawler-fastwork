@@ -12,7 +12,7 @@ services:
       - DB_SHOW_SQL=true
       - DB_DIALECT=org.hibernate.dialect.MySQL5InnoDBDialect
 
-      - CRAWLER_CRON_POST_DAILY=0 0 23 * * *?
+      - CRAWLER_CRON_DELAY=1800000
 
       - EMAIL_USER=
       - EMAIL_PASSWORD=

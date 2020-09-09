@@ -15,7 +15,7 @@ public class CrawlerFwSchedule {
     @Autowired
     CustomerService customerService;
 
-    @Scheduled(fixedRateString = "${crawler.cron.daily}")
+    @Scheduled(fixedRateString = "${crawler.cron.delay}")
     public void importData() throws MessagingException, UnirestException {
         customerService.getCustomers();
     }
