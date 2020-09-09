@@ -6,6 +6,7 @@ services:
     image: crawler-fastwork:latest
     environment:
       - DB_URL=jdbc:mysql://:3306/laravel?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+      - DB_DRIVER=
       - DB_USERNAME=
       - DB_PASSWORD=
       - DB_DDL_AUTO=update
