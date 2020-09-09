@@ -43,7 +43,6 @@ public class CustomerServiceImpl implements CustomerService {
         JSONObject res = new JSONObject(response.getBody());
         JSONObject jsonObject = res.getJSONObject("object");
         int total = jsonObject.getInt("total");
-        log.info(String.valueOf(total));
         List<Customer> customers = new ArrayList<Customer>();
         for (int n = 0; n < total; n++) {
             String customer_id = jsonObject.getJSONArray("result").getJSONObject(n).get("_id").toString();
@@ -52,7 +51,9 @@ public class CustomerServiceImpl implements CustomerService {
             HttpResponse<String> customer_detail = getCustomerDetail(customer_id);
             JSONObject customer = new JSONObject(customer_detail.getBody()).getJSONArray("result").getJSONObject(0);
             Customer updateCustomer = getCustomerUpdate(customer, customer_id);
+
             if (updateCustomer == null) continue;
+            customerFastworkRepository.save(CustomerUtil.convertCustomerObject(updateCustomer.getCode(),customer_id));
             customers.add(updateCustomer);
         }
         if (customers.size()>0){
@@ -130,7 +131,6 @@ public class CustomerServiceImpl implements CustomerService {
 
     private Customer getCustomerUpdate(JSONObject customer, String customer_id) {
         try {
-            log.info(customer.toString());
             JSONObject data = customer.getJSONObject("data");
             JSONObject ma_khach_hang = data.getJSONObject("ma_khach_hang");
             String type = data.getJSONObject("nguon_khach_hang").get("viewData").toString();
@@ -148,10 +148,11 @@ public class CustomerServiceImpl implements CustomerService {
             updateData.put("lat", customer.get("lat"));
             updateData.put("status", customer.getJSONObject("status"));
             updateData.put("trang_thai", customer.getJSONObject("trang_thai"));
-            updateData.put("groupAssignTo", customer.getJSONObject("groupAssignTo"));
+//            updateData.put("groupAssignTo", customer.getJSONObject("groupAssignTo"));
             ma_khach_hang.put("viewData", newCode);
             data.put("ma_khach_hang", ma_khach_hang);
             updateData.put("data", data);
+            log.info(updateData.toString());
             updateCustomer(updateData, customer_id);
             return CustomerUtil.convertJsonToCustomer(data, customer.getJSONArray("memberAssignTo").getJSONObject(0).get("name").toString());
         } catch (Exception ex) {
