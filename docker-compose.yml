@@ -17,6 +17,8 @@ services:
 
       - EMAIL_USER=
       - EMAIL_PASSWORD=
+    depends_on:
+      - mysqldb
     networks:
       nvn_net:
 networks:
