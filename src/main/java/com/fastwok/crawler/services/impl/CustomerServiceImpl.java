@@ -31,8 +31,8 @@ public class CustomerServiceImpl implements CustomerService {
     @Autowired
     private CustomerFastworkRepository customerFastworkRepository;
 
-    @Autowired
-    private MailSenderService mailSenderService;
+//    @Autowired
+//    private MailSenderService mailSenderService;
 
     @Override
     public void getCustomers() throws UnirestException, MessagingException {
@@ -58,7 +58,7 @@ public class CustomerServiceImpl implements CustomerService {
         }
         if (customers.size()>0){
             String html = CustomerUtil.convertCustomerToHTML(customers);
-            mailSenderService.sendMail(html);
+//            mailSenderService.sendMail(html);
         }
     }
 
