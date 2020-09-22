@@ -10,7 +10,7 @@ import java.util.Date;
 @Table(name="customers")
 public class Customer {
     @Id
-    private Long id;
+    private Long Id;
     private String code;
     private String name_follow;
     @Column(nullable = true)

@@ -53,10 +53,10 @@ public class CustomerServiceImpl implements CustomerService {
             Customer updateCustomer = getCustomerUpdate(customer, customer_id);
 
             if (updateCustomer == null) continue;
-            customerFastworkRepository.save(CustomerUtil.convertCustomerObject(updateCustomer.getCode(),customer_id));
+            customerFastworkRepository.save(CustomerUtil.convertCustomerObject(updateCustomer.getCode(), customer_id));
             customers.add(updateCustomer);
         }
-        if (customers.size()>0){
+        if (customers.size() > 0) {
             String html = CustomerUtil.convertCustomerToHTML(customers);
             mailSenderService.sendMail(html);
         }
@@ -130,14 +130,18 @@ public class CustomerServiceImpl implements CustomerService {
 
 
     private Customer getCustomerUpdate(JSONObject customer, String customer_id) {
+        JSONObject data = customer.getJSONObject("data");
+        JSONObject ma_khach_hang = data.getJSONObject("ma_khach_hang");
         try {
-            JSONObject data = customer.getJSONObject("data");
-            JSONObject ma_khach_hang = data.getJSONObject("ma_khach_hang");
-            String type = data.getJSONObject("nguon_khach_hang").get("viewData").toString();
             Object fax = data.getJSONObject("fax").get("viewData");
+            Object parent = data.getJSONObject("nguon_khach_hang").get("viewData");
             String address = StringUtil.convetAddress(data.getJSONObject("dia_chi").get("viewData").toString());
+            if (fax.equals("")||parent.equals("")||address.equals("")){
+                log.info(ma_khach_hang.toString());
+                return null;
+            }
 
-            String newCode = StringUtil.formatCode(fax + "_" + address + "_" + type);
+            String newCode = StringUtil.formatCode(fax + "_" + address + "_"+parent);
 
             int size = customerRepository.getByIdCode(newCode).size();
             if (size > 0) {
@@ -148,7 +152,9 @@ public class CustomerServiceImpl implements CustomerService {
             updateData.put("lat", customer.get("lat"));
             updateData.put("status", customer.getJSONObject("status"));
             updateData.put("trang_thai", customer.getJSONObject("trang_thai"));
-//            updateData.put("groupAssignTo", customer.getJSONObject("groupAssignTo"));
+            if (customer.has("groupAssignTo")) {
+                updateData.put("groupAssignTo", customer.getJSONObject("groupAssignTo"));
+            }
             ma_khach_hang.put("viewData", newCode);
             data.put("ma_khach_hang", ma_khach_hang);
             updateData.put("data", data);
@@ -156,7 +162,7 @@ public class CustomerServiceImpl implements CustomerService {
             updateCustomer(updateData, customer_id);
             return CustomerUtil.convertJsonToCustomer(data, customer.getJSONArray("memberAssignTo").getJSONObject(0).get("name").toString());
         } catch (Exception ex) {
-            log.info(ex.toString());
+            log.info(ma_khach_hang.toString());
         }
         return null;
     }

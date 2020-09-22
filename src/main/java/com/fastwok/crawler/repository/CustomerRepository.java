@@ -1,14 +1,14 @@
 package com.fastwok.crawler.repository;
 
-import com.fastwok.crawler.entities.Customer;
+import com.fastwok.crawler.entities.B20Customer;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
 
-public interface CustomerRepository extends JpaRepository<Customer, Long> {
+public interface CustomerRepository extends JpaRepository<B20Customer, Long> {
 
-    @Query("SELECT cus FROM Customer cus WHERE cus.code=?1")
-    List<Customer> getByIdCode( String code);
+    @Query("SELECT cus FROM B20Customer cus WHERE cus.Code LIKE ?1%")
+    List<B20Customer> getByIdCode( String code);
 }
